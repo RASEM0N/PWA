@@ -4,9 +4,9 @@
   "version": "0.0.0",
   "type": "module",
   "scripts": {
-    "dev:vite": "vite",
-    "dev:sw": "tsc --watch --project tsconfig.sw.json",
+    "dev": "vite",
     "build": "tsc -b && vite build",
+    "build:sw": "tsc -p sw/tsconfig.json && vite build --config vite.sw.config.ts",
     "lint": "eslint .",
     "preview": "vite preview",
     "prettier": "prettier ./src/* --write"
@@ -17,6 +17,7 @@
   },
   "devDependencies": {
     "@eslint/js": "^9.9.0",
+    "@types/node": "^22.7.4",
     "@types/react": "^18.3.3",
     "@types/react-dom": "^18.3.0",
     "@vitejs/plugin-react": "^4.3.1",
