@@ -1,5 +1,6 @@
 import { useCallback, useState } from 'react';
 import { Todo } from './types';
+import { sendMessage as sendMessageToSW } from '../../service-worker';
 
 export enum STATUS {
 	none = 'none',
@@ -30,8 +31,27 @@ export const useTodos = () => {
 			});
 	}, []);
 
+	const loadViaPostMessage = useCallback((needCache = false) => {
+		setStatus(STATUS.loading);
+		sendMessageToSW({
+			type: 'fetch',
+			extra: { url: 'https://jsonplaceholder.typicode.com/todos/', needCache  },
+		})
+			.then((r) => {
+				setTodos(r.slice(0, 10));
+				setStatus(STATUS.loaded);
+			})
+			.catch(() => {
+				setStatus(STATUS.error);
+			});
+	}, []);
+
+	const loadViaPostMessageFromIndexDB = useCallback(() => loadViaPostMessage(true), []);
+
 	return {
 		loadFromCache,
+		loadViaPostMessage,
+		loadViaPostMessageFromIndexDB,
 		todos,
 		status,
 	};

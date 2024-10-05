@@ -1,5 +1,6 @@
 import { addAll, deleteOldVersions } from './cache/cache';
 import { cacheFirst } from './cache/cacheStrategies';
+import { addTodos, getTodos, open } from './indexedDB/indexDB';
 
 // https://github.com/microsoft/TypeScript/issues/11781
 // по умолчанию self это WorkerGlobalScope,
@@ -12,6 +13,7 @@ self.addEventListener('install', (event: ExtendableEvent) => {
 		(async () => {
 			await deleteOldVersions(__CACHE_FOR_CONTENT__);
 			await addAll(__CACHE_FOR_CONTENT__);
+			await open();
 		})(),
 	);
 
@@ -26,7 +28,6 @@ self.addEventListener('activate', (event: ExtendableEvent) => {
 		'background: #222; color: #bada55',
 	);
 });
-
 
 // не расскукоживать { respondWith } - наебыватся начинает TypeError: Illegal invocation
 self.addEventListener('fetch', (event: FetchEvent) => {
@@ -58,5 +59,37 @@ self.addEventListener('fetch', (event: FetchEvent) => {
 
 	if (__CACHE_FOR_OUT_CONTENT__.hrefs.includes(url.hostname)) {
 		return event.respondWith(cacheFirst(__CACHE_FOR_OUT_CONTENT__, request));
+	}
+});
+
+self.addEventListener('message', async (event) => {
+	const data = event.data;
+
+	switch (data.type) {
+		case 'fetch': {
+			try {
+				if (data.extra.needCache) {
+					const todos = await getTodos();
+
+					if (todos?.length) {
+						return event.ports[0].postMessage(todos);
+					}
+				}
+
+				const todos = await fetch(data.extra.url).then((r) => r.json());
+				if (data.extra.needCache) {
+					addTodos(todos);
+				}
+
+				event.ports[0].postMessage(todos);
+			} catch (e) {
+				event.ports[0].postMessage({ error: e });
+			}
+			return;
+		}
+
+		default: {
+			return event.ports[0].postMessage({ error: `Unknown message type ${data.type}` });
+		}
 	}
 });
