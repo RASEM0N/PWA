@@ -1,5 +1,5 @@
-import { addAll, deleteOldVersions, getCacheValue } from './cache';
-import { cacheFirst } from './cacheStrategies';
+import { addAll, deleteOldVersions } from './cache/cache';
+import { cacheFirst } from './cache/cacheStrategies';
 
 // https://github.com/microsoft/TypeScript/issues/11781
 // по умолчанию self это WorkerGlobalScope,
@@ -27,14 +27,36 @@ self.addEventListener('activate', (event: ExtendableEvent) => {
 	);
 });
 
+
+// не расскукоживать { respondWith } - наебыватся начинает TypeError: Illegal invocation
 self.addEventListener('fetch', (event: FetchEvent) => {
-	const url = new URL(event.request.url);
+	const request = event.request;
+	const url = new URL(request.url);
+	const IS_DEV = new URL(self.location.href).searchParams.get('development') === 'true';
+
+	if (request.headers.has('Cache-Service-Worker-Name')) {
+		return event.respondWith(
+			cacheFirst(
+				{
+					name: request.headers.get('Cache-Service-Worker-Name') as string,
+					version: Number(request.headers.get('Cache-Service-Worker-Version')),
+					hrefs: [],
+				},
+				request,
+			),
+		);
+	}
+
+	// ниче не кэшируем если DEV
+	if (IS_DEV) {
+		return;
+	}
 
 	if (self.location.origin === url.origin) {
-		event.respondWith(cacheFirst(__CACHE_FOR_CONTENT__, event.request));
+		return event.respondWith(cacheFirst(__CACHE_FOR_CONTENT__, request));
 	}
 
 	if (__CACHE_FOR_OUT_CONTENT__.hrefs.includes(url.hostname)) {
-		event.respondWith(cacheFirst(__CACHE_FOR_OUT_CONTENT__, event.request));
+		return event.respondWith(cacheFirst(__CACHE_FOR_OUT_CONTENT__, request));
 	}
 });

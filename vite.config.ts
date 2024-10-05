@@ -4,11 +4,14 @@ import path from 'path';
 
 // https://vitejs.dev/config/
 // @ts-ignore
-export default defineConfig(() => {
+export default defineConfig(({ mode }) => {
+	const IS_DEV = mode === 'development';
+
 	return {
 		plugins: [react()],
 		define: {
 			__SW_PATH__: JSON.stringify('./service-worker.js'),
+			__IS_DEV__: JSON.stringify(IS_DEV),
 		},
 		build: {
 			rollupOptions: {
