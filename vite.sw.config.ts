@@ -10,13 +10,17 @@ export default defineConfig(() => {
 	const payload = {
 		name: 'payload',
 		version: 1,
+
+		// в ссылках обязательно / надо писать, без нее не заработает
 		hrefs: [
-			'robots.txt',
-			'manifest.json',
-			'images/blood-moon.jpg',
-			'images/woman.jpg',
-			'assets/index.js',
-			'assets/index.css',
+			'/',
+			'/assets/index.js',
+			'/assets/index.css',
+
+			'/robots.txt',
+			'/manifest.json',
+			'/images/blood-moon.jpg',
+			'/images/woman.jpg',
 		],
 	};
 
