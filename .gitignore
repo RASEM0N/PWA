@@ -25,3 +25,5 @@ dist-ssr
 
 tsconfig.*.tsbuildinfo
 public/scripts/*
+public/sw/*
+service-worker*

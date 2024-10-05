@@ -2,17 +2,28 @@ import { defineConfig } from 'vite';
 import path from 'path';
 
 // https://vitejs.dev/config/
+
+// ошибка в output, когда используем вместе
+// dir и format, хотя компилится все ок
+// @ts-ignore
 export default defineConfig(() => {
 	const payload = {
 		name: 'payload',
 		version: 1,
-		hrefs: ['index.js', 'index.css', 'index.html'],
+		hrefs: [
+			'robots.txt',
+			'manifest.json',
+			'images/blood-moon.jpg',
+			'images/woman.jpg',
+			'assets/index.js',
+			'assets/index.css',
+		],
 	};
 
 	const content = {
 		name: 'content',
 		version: 1,
-		hrefs: ['scripts/sw.js'],
+		hrefs: [],
 	};
 
 	return {
@@ -20,13 +31,15 @@ export default defineConfig(() => {
 			__CACHE_PAYLOAD__: JSON.stringify(payload),
 			__CACHE_CONTENT__: JSON.stringify(content),
 		},
+
 		build: {
-			rollupOptions: {
-				input: path.join(__dirname, 'sw/index.ts'),
-				output: {
-					dir: './public/scripts',
-					entryFileNames: 'sw.js',
-				},
+			minify: false,
+			emptyOutDir: false,
+			outDir: path.join(__dirname, 'public'),
+			lib: {
+				entry: path.join(__dirname, 'sw/index.ts'),
+				fileName: 'service-worker',
+				formats: ['es'],
 			},
 		},
 	};

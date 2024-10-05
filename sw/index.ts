@@ -13,6 +13,14 @@ self.addEventListener('install', (event: ExtendableEvent) => {
 			await addAll(__CACHE_PAYLOAD__);
 		})(),
 	);
+
+	event.waitUntil(self.skipWaiting());
+	console.info('%c[Service Worker] Install complete', 'background: #222; color: #bada55');
 });
+
+self.addEventListener('activate', (event) => {
+	event.waitUntil(self.clients.claim());
+	console.info('%c[Service Worker] Activate claiming control', 'background: #222; color: #bada55');
+})
 
 self.addEventListener('fetch', ({ request, respondWith }) => {});

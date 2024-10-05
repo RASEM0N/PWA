@@ -1,5 +1,3 @@
-import { self } from './index';
-
 const CACHE_SEPARATOR = '__v';
 
 export const deleteOldVersions = async ({ version, name }: DefineCache) => {
