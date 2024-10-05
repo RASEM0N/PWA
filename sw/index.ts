@@ -10,8 +10,8 @@ export declare var self: ServiceWorkerGlobalScope;
 self.addEventListener('install', (event: ExtendableEvent) => {
 	event.waitUntil(
 		(async () => {
-			await deleteOldVersions(__CACHE_PAYLOAD__);
-			await addAll(__CACHE_PAYLOAD__);
+			await deleteOldVersions(__CACHE_FOR_CONTENT__);
+			await addAll(__CACHE_FOR_CONTENT__);
 		})(),
 	);
 
@@ -31,10 +31,10 @@ self.addEventListener('fetch', (event: FetchEvent) => {
 	const url = new URL(event.request.url);
 
 	if (self.location.origin === url.origin) {
-		event.respondWith(cacheFirst(__CACHE_PAYLOAD__, event.request));
+		event.respondWith(cacheFirst(__CACHE_FOR_CONTENT__, event.request));
 	}
 
-	if (__CACHE_CONTENT__.hrefs.includes(url.hostname)) {
-		event.respondWith(cacheFirst(__CACHE_CONTENT__, event.request));
+	if (__CACHE_FOR_OUT_CONTENT__.hrefs.includes(url.hostname)) {
+		event.respondWith(cacheFirst(__CACHE_FOR_OUT_CONTENT__, event.request));
 	}
 });

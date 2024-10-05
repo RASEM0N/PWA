@@ -8,7 +8,7 @@ import path from 'path';
 // @ts-ignore
 export default defineConfig(() => {
 	const payload = {
-		name: 'payload',
+		name: 'content',
 		version: 1,
 
 		// в ссылках обязательно / надо писать, без нее не заработает
@@ -25,7 +25,7 @@ export default defineConfig(() => {
 	};
 
 	const content = {
-		name: 'content',
+		name: 'content_out',
 		version: 1,
 		hrefs: [
 			'fonts.googleapis.com'
@@ -34,8 +34,8 @@ export default defineConfig(() => {
 
 	return {
 		define: {
-			__CACHE_PAYLOAD__: JSON.stringify(payload),
-			__CACHE_CONTENT__: JSON.stringify(content),
+			__CACHE_FOR_CONTENT__: JSON.stringify(payload),
+			__CACHE_FOR_OUT_CONTENT__: JSON.stringify(content),
 		},
 
 		build: {
