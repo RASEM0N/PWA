@@ -27,7 +27,9 @@ export default defineConfig(() => {
 	const content = {
 		name: 'content',
 		version: 1,
-		hrefs: [],
+		hrefs: [
+			'fonts.googleapis.com'
+		],
 	};
 
 	return {

@@ -30,9 +30,11 @@ self.addEventListener('activate', (event: ExtendableEvent) => {
 self.addEventListener('fetch', (event: FetchEvent) => {
 	const url = new URL(event.request.url);
 
-	if (self.location.origin !== url.origin) {
-		return;
+	if (self.location.origin === url.origin) {
+		event.respondWith(cacheFirst(__CACHE_PAYLOAD__, event.request));
 	}
 
-	event.respondWith(cacheFirst(__CACHE_PAYLOAD__, event.request));
+	if (__CACHE_CONTENT__.hrefs.includes(url.hostname)) {
+		event.respondWith(cacheFirst(__CACHE_CONTENT__, event.request));
+	}
 });
