@@ -20,6 +20,7 @@
   },
   "include": [
     "vite.config.ts",
-    "vite.sw.config.ts"
+    "vite.sw.config.ts",
+    "plugins/*"
   ]
 }

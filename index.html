@@ -1,11 +1,42 @@
 <!doctype html>
-<html lang="en">
+<html lang="ru">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
     <link rel="manifest" href="/manifest.json">
-    <link rel="icon" href="/icons/48x48.png">
-    <title>PWA</title>
+    <meta name="theme-color" content="#ffffff">
+
+    <link rel="icon" href="/icons/512x512.png" sizes="72x72">
+    <link rel="icon" href="/icons/512x512.png" sizes="96x96">
+    <link rel="icon" href="/icons/512x512.png" sizes="128x128">
+    <link rel="icon" href="/icons/512x512.png" sizes="144x144">
+    <link rel="icon" href="/icons/512x512.png" sizes="192x192">
+    <link rel="icon" href="/icons/512x512.png" sizes="256x256">
+    <link rel="icon" href="/icons/512x512.png" sizes="384x384">
+    <link rel="icon" href="/icons/512x512.png" sizes="512x512">
+
+    <meta name="og:title" content="<%= title %>">
+    <meta name="og:description" content="<%= description %>">
+    <meta name="og:locale" content="ru_RU">
+
+    <meta name="og:image" content="/images/blood-moon.jpg">
+    <meta name="og:image:type" content="image/jpg">
+    <meta name="og:image:height" content="4460">
+    <meta name="og:image:width" content="3345">
+    <meta name="og:image:alt" content="PWA Blood Moon">
+
+    <meta name="twitter:title" content="<%= title %>">
+    <meta name="twitter:description" content="<%= description %>">
+
+    <meta name="aiturec:title" content="<%= title %>">
+    <meta name="aiturec:description" content="<%= description %>">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700;900&display=swap">
+
+    <title><%= name %></title>
   </head>
   <body>
     <div id="root"></div>

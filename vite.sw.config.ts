@@ -28,7 +28,8 @@ export default defineConfig(() => {
 		name: 'content_out',
 		version: 1,
 		hrefs: [
-			'fonts.googleapis.com'
+			'fonts.googleapis.com',
+			'fonts.gstatic.com'
 		],
 	};
 
